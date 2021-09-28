@@ -28,7 +28,14 @@ class fetch_from_mysql:
             values.append(list(table_name.values()))
         return values,cur
 
-    
+    def get_schema(self):
+        tables,cur = self.return_tables()
+        metadata = []
+        for table in tables:
+            cur.execute(f"DESCRIBE {table[0]}")
+            metadata.append(cur.fetchall())
+        cur.close()
+        return metadata
 
 
     def fetch_data(self,table_name):
