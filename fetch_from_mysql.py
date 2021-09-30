@@ -13,8 +13,7 @@ class fetch_from_mysql:
         connection = pymysql.connect(host='localhost',
                                                 user='root',
                                                 database = self.db,
-                                                password='adminadmin',
-                                                cursorclass = pymysql.cursors.DictCursor)
+                                                password='adminadmin')
 
         cursor = connection.cursor()
         return connection, cursor
@@ -25,14 +24,18 @@ class fetch_from_mysql:
         tables = cur.fetchall()
         values = []
         for table_name in tables:
-            values.append(list(table_name.values()))
-        return values,cur
+            values.append(list(table_name))
+        order = [5,6,0,1,2,3,4]
+        values = [values[o] for o in order]
+        cur.close()
+        return values
 
     def get_schema(self):
-        tables,cur = self.return_tables()
+        _,cur = self.create_connection()
+        tables = self.return_tables()
         metadata = []
         for table in tables:
-            cur.execute(f"DESCRIBE {table[0]}")
+            cur.execute(f"SHOW CREATE TABLE {table[0]}")
             metadata.append(cur.fetchall())
         cur.close()
         return metadata
@@ -56,3 +59,6 @@ class fetch_from_mysql:
         return df
 
 
+# if __name__ == "__main__":
+#     f = fetch_from_mysql("Sensor_raw_db")
+#     print(f.return_tables())
