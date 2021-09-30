@@ -1,4 +1,3 @@
-import sqlalchemy
 from sqlalchemy import create_engine
 import psycopg2
 import pandas as pd
@@ -57,7 +56,7 @@ class insert_postgres:
 
 
 
-if __name__ == "__main__":
-    ip = insert_postgres("Sensor_raw_db")
-    ip.create_tables()
+# if __name__ == "__main__":
+#     ip = insert_postgres("Sensor_raw_db")
+#     ip.create_tables()
 
